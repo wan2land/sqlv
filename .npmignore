@@ -1,6 +1,6 @@
 *
 !/dist/**/*
 !/src/**/*
+!/static/**/*
 *.md
 !README.md
-
