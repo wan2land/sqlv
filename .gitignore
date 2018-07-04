@@ -2,3 +2,7 @@
 /dist
 
 yarn-error.log
+
+# for testing
+/migrations/*
+/sqlv.config.js
