@@ -43,3 +43,21 @@ sqlv migrate
 ```
 
 done!
+
+## Scripts
+
+add scripts to `package.json`.
+
+```json
+{
+  "scripts": {
+    "sqlv:init": "sqlv init",
+    "sqlv:create": "sqlv create",
+    "sqlv:status": "sqlv status",
+    "sqlv:migrate": "sqlv migrate",
+    "sqlv:rollback": "sqlv rollback",
+    "sqlv:up": "sqlv up",
+    "sqlv:down": "sqlv down"
+  }
+}
+```

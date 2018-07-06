@@ -4,6 +4,7 @@ import * as program from "commander"
 import {mkdirp, writeFile, readFile} from "./helpers/fs"
 import {join} from "path"
 import {loadConfigFile} from "./helpers/config"
+import {Creator} from "./migrator/creator"
 import {Migrator} from "./migrator/migrator"
 import {create as createConnection} from "async-db-adapter"
 
@@ -38,12 +39,7 @@ program
   .description("create sqlv migration file")
   .action(async (name, options) => {
     const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    await migrator.create(name)
-    defaultConnection.close()
+    await new Creator(config).create(name)
   })
   .on("--help", () => {
     console.log()
