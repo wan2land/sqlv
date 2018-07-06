@@ -8,38 +8,84 @@
 
 Let SQL do what SQL can.
 
-sqlv is very simple SQL Migrator.
+SQLV is very simple SQL Migrator.
 
 ## Installation
 
 ```bash
-npm install sqlv -g
+npm install sqlv -g # or npm install sqlv --dev
 ```
 
 ## Usage
 
-initialize.
+Initialize.
 
 ```bash
 sqlv init .
 ```
 
-then, create `sqlv.config.js` file.
+This will create a configuration file, `sqlv.config.js`.
 
-if you want use mysql, install `mysql` or `mysql2`. and, fix `sqlv.config.js` file.
+You need to install additional packages(`mysql`, `mysql2`...) to match your database. SQLV is
+based on the [async-db-adapter](https://www.npmjs.com/package/async-db-adapter).
 
-create migration file.
+example, 
+
+```bash
+npm install mysql2 -g
+```
+
+Now, edit `sqlv.config.js` file as follows:
+
+```js
+module.exports = {
+  type: "mysql2",
+  host: "localhost",
+  database: "",
+  user: "sqlvuser",
+  password: "********",
+}
+```
+
+### Create Migrations
 
 ```bash
 sqlv create create_init_tables
 ```
 
-then, create two migration files in `migrations` directory.
+Two files(`create_init_tables.up.sql`, `create_init_tables.down.sql`) are created under
+the `./migrations` directory.
 
-write two migration files. (`up` is migrate file, `down` is rollback file.)
+Now, Migrate!
 
 ```bash
 sqlv migrate
 ```
 
-done!
+Done! :-)
+
+## Commands
+
+- `init <path>` : Initialize the project.
+- `create <name>` : Create a migration file.
+- `status` : Show migration status.
+- `migrate` : Migrate.
+- `rollback` : Rollback.
+- `up <migration_id>` : Only apply the specific migration.
+- `down <migration_id>` : Only rollback the specific migration.
+
+Add scripts to `package.json` :
+
+```json
+{
+  "scripts": {
+    "sqlv:init": "sqlv init",
+    "sqlv:create": "sqlv create",
+    "sqlv:status": "sqlv status",
+    "sqlv:migrate": "sqlv migrate",
+    "sqlv:rollback": "sqlv rollback",
+    "sqlv:up": "sqlv up",
+    "sqlv:down": "sqlv down"
+  }
+}
+```
