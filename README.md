@@ -1,5 +1,6 @@
 # SQLV
 
+[![Build](https://travis-ci.org/corgidisco/sqlv.svg?branch=master)](https://travis-ci.org/corgidisco/sqlv)
 [![Downloads](https://img.shields.io/npm/dt/sqlv.svg)](https://npmcharts.com/compare/sqlv?minimal=true)
 [![Version](https://img.shields.io/npm/v/sqlv.svg)](https://www.npmjs.com/package/sqlv)
 [![License](https://img.shields.io/npm/l/sqlv.svg)](https://www.npmjs.com/package/sqlv)
