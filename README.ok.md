@@ -11,6 +11,8 @@ Let SQL do what SQL can.
 
 SQLV is very simple SQL Migrator.
 
+![SQLV Image](./images/sqlv.png)
+
 ## Installation
 
 ```bash
@@ -27,10 +29,10 @@ sqlv init .
 
 This will create a configuration file, `sqlv.config.js`.
 
-You need to install additional packages(`mysql`, `mysql2`...) to match your database. SQLV is
+You need to install additional packages(`mysql`, `mysql2`, `pg`, `sqlite3`) to match your database. SQLV is
 based on the [async-db-adapter](https://www.npmjs.com/package/async-db-adapter).
 
-example, 
+example,
 
 ```bash
 npm install mysql2 -g
@@ -40,7 +42,7 @@ Now, edit `sqlv.config.js` file as follows:
 
 ```js
 module.exports = {
-  type: "mysql2",
+  adapter: "mysql2",
   host: "localhost",
   database: "",
   user: "sqlvuser",
@@ -74,19 +76,3 @@ Done! :-)
 - `rollback` : Rollback.
 - `up <migration_id>` : Only apply the specific migration.
 - `down <migration_id>` : Only rollback the specific migration.
-
-Add scripts to `package.json` :
-
-```json
-{
-  "scripts": {
-    "sqlv:init": "sqlv init",
-    "sqlv:create": "sqlv create",
-    "sqlv:status": "sqlv status",
-    "sqlv:migrate": "sqlv migrate",
-    "sqlv:rollback": "sqlv rollback",
-    "sqlv:up": "sqlv up",
-    "sqlv:down": "sqlv down"
-  }
-}
-```
