@@ -5,7 +5,7 @@ import { create as createConnection } from "async-db-adapter"
 import { loadConfigFile } from "../helpers/config"
 import { Migrator } from "../migrator/migrator"
 
-const command = "up <migrationid>"
+const command = "up <id>"
 const describe = "Run the specific migration."
 
 export class UpCommand implements CommandModule {
@@ -18,7 +18,7 @@ export class UpCommand implements CommandModule {
       .usage(`${chalk.bold("Usage: ")}$0 ${chalk.bold(command)}
 
 ${describe}`)
-      .positional("migrationid", {
+      .positional("id", {
         describe: chalk.gray("specific migration id, like 180101_000000"),
       })
       .example(chalk.cyan("$ sqlv up 180101_000000"), "")
@@ -33,9 +33,9 @@ ${describe}`)
     try {
       process.stdout.write(`up ${options.id} ... `)
       await migrator.up(options.id)
-      process.stdout.write(`\rup ${options.id} ... OK\n`)
+      process.stdout.write(`\rup ${options.id} ... ${chalk.green("OK")}\n`)
     } catch (e) {
-      process.stdout.write(`\rup ${options.id} ... Fail\n`)
+      process.stdout.write(`\rup ${options.id} ... ${chalk.red("FAIL")}\n`)
       console.error(e.message)
       defaultConnection.close()
       process.exit(1)

@@ -31,9 +31,9 @@ ${describe}`)
       await migrator.rollback((migration) => {
         process.stdout.write(`down ${migration.id} ... `)
       }, (migration) => {
-        process.stdout.write(`\rdown ${migration.id} ... OK\n`)
+        process.stdout.write(`\rdown ${migration.id} ... ${chalk.green("OK")}\n`)
       }, (_, migration) => {
-        process.stdout.write(`\rdown ${migration.id} ... Fail\n`)
+        process.stdout.write(`\rdown ${migration.id} ... ${chalk.red("FAIL")}\n`)
       })
     } catch (e) {
       console.error(e.message)

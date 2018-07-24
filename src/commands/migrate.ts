@@ -31,9 +31,9 @@ ${describe}`)
       await migrator.migrate((migration) => {
         process.stdout.write(`up ${migration.id} ... `)
       }, (migration) => {
-        process.stdout.write(`\rup ${migration.id} ... OK\n`)
+        process.stdout.write(`\rup ${migration.id} ... ${chalk.green("OK")}\n`)
       }, (_, migration) => {
-        process.stdout.write(`\rup ${migration.id} ... Fail\n`)
+        process.stdout.write(`\rup ${migration.id} ... ${chalk.red("FAIL")}\n`)
       })
     } catch (e) {
       console.error(e.message)

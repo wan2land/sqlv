@@ -5,7 +5,7 @@ import { create as createConnection } from "async-db-adapter"
 import { loadConfigFile } from "../helpers/config"
 import { Migrator } from "../migrator/migrator"
 
-const command = "down <migrationid>"
+const command = "down <id>"
 const describe = "Rollback the specific migration."
 
 export class DownCommand implements CommandModule {
@@ -18,7 +18,7 @@ export class DownCommand implements CommandModule {
       .usage(`${chalk.bold("Usage: ")}$0 ${chalk.bold(command)}
 
 ${describe}`)
-      .positional("migrationid", {
+      .positional("id", {
         describe: chalk.gray("specific migration id, like 180101_000000"),
       })
       .example(chalk.cyan("$ sqlv down 180101_000000"), "")
@@ -33,9 +33,9 @@ ${describe}`)
     try {
       process.stdout.write(`down ${options.id} ... `)
       await migrator.down(options.id)
-      process.stdout.write(`\rdown ${options.id} ... OK\n`)
+      process.stdout.write(`\rdown ${options.id} ... ${chalk.green("OK")}\n`)
     } catch (e) {
-      process.stdout.write(`\rdown ${options.id} ... Fail\n`)
+      process.stdout.write(`\rdown ${options.id} ... ${chalk.red("FAIL")}\n`)
       console.error(e.message)
       defaultConnection.close()
       process.exit(1)
