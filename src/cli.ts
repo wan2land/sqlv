@@ -1,178 +1,56 @@
 #!/usr/bin/env node
 
-import * as program from "commander"
-import {mkdirp, writeFile, readFile} from "./helpers/fs"
-import {join} from "path"
-import {loadConfigFile} from "./helpers/config"
-import {Creator} from "./migrator/creator"
-import {Migrator} from "./migrator/migrator"
-import {create as createConnection} from "async-db-adapter"
+import * as yargs from "yargs"
+import chalk from "chalk"
+import { InitCommand } from "./commands/init"
+import { CreateCommand } from "./commands/create"
+import { StatusCommand } from "./commands/status"
+import { MigrateCommand } from "./commands/migrate"
+import { RollbackCommand } from "./commands/rollback"
+import { UpCommand } from "./commands/up"
+import { DownCommand } from "./commands/down"
 
 const pkg = require("../package.json") // tslint:disable-line
 
-const configFileDefault = "sqlv.config.js"
+const argv = yargs
+  .usage(`
+Simple SQL Migrator
 
-program
+${chalk.bold("Usage: $0")} COMMAND [options]`)
   .version(pkg.version)
-  .option("-c, --config <path>", "set config path. defaults to ./sqlv.config.js")
+  .command(new InitCommand())
+  .command(new CreateCommand())
+  .command(new StatusCommand())
+  .command(new MigrateCommand())
+  .command(new RollbackCommand())
+  .command(new UpCommand())
+  .command(new DownCommand())
+  .option("config", {
+    alias: "c",
+    type: "string",
+    default: "./sqlv.config.js",
+    description: `${chalk.gray("Set config path")}`,
+  })
+  .strict()
+  .help("h")
+  .alias("h", "help")
+  .updateStrings({
+    "Positionals:": chalk.bold("Positionals:"),
+    "Examples:": chalk.bold("Examples:"),
+    "Commands:": chalk.bold("Commands:"),
+    "Options:": chalk.bold("Options:"),
 
-// [] optional, <> must
-program
-  .command("init <path>")
-  .description("initialize sqlv enviroment")
-  .action(async (path, options) => {
-    const configFile = options.parent.config || configFileDefault
-    await mkdirp(path)
-    await writeFile(join(path, configFile), await readFile(join(__dirname, "../static/sqlv.config.js")))
-  })
-  .on("--help", () => {
-    console.log()
-    console.log("  Examples:")
-    console.log()
-    console.log("    $ sqlv init .")
-    console.log("    $ sqlv init yourproject")
-    console.log()
-  })
+    "boolean": chalk.cyan("boolean"),
+    "string": chalk.cyan("string"),
+    "default:": chalk.yellow("default:"),
 
-program
-  .command("create <name>")
-  .description("create sqlv migration file")
-  .action(async (name, options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    await new Creator(config).create(name)
-  })
-  .on("--help", () => {
-    console.log()
-    console.log("  Examples:")
-    console.log()
-    console.log("    $ sqlv create migration_name")
-    console.log()
-  })
+    "required": chalk.cyan.bold("required"),
 
-program
-  .command("status")
-  .description("show status")
-  .action(async (options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    const migrations = await migrator.status()
-    console.log(migrations)
-    defaultConnection.close()
+    "Show help": chalk.gray("Show help"),
+    "Show version number": chalk.gray("Show version number"),
   })
+  .argv
 
-program
-  .command("migrate")
-  .description("migrate")
-  .action(async (options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    try {
-      await migrator.migrate((migration) => {
-        process.stdout.write(`up ${migration.id} ... `)
-      }, (migration) => {
-        process.stdout.write(`\rup ${migration.id} ... OK\n`)
-      }, (_, migration) => {
-        process.stdout.write(`\rup ${migration.id} ... Fail\n`)
-      })
-    } catch (e) {
-      console.error(e.message)
-      defaultConnection.close()
-      process.exit(1)
-    }
-    defaultConnection.close()
-  })
-
-program
-  .command("rollback")
-  .description("rollback")
-  .action(async (options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    try {
-      await migrator.rollback((migration) => {
-        process.stdout.write(`down ${migration.id} ... `)
-      }, (migration) => {
-        process.stdout.write(`\rdown ${migration.id} ... OK\n`)
-      }, (_, migration) => {
-        process.stdout.write(`\rdown ${migration.id} ... Fail\n`)
-      })
-    } catch (e) {
-      console.error(e.message)
-      defaultConnection.close()
-      process.exit(1)
-    }
-    defaultConnection.close()
-  })
-
-program
-  .command("up <migration_id>")
-  .description("migrate specific migration")
-  .action(async (id, options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    try {
-      process.stdout.write(`up ${id} ... `)
-      await migrator.up(id)
-      process.stdout.write(`\rup ${id} ... OK\n`)
-    } catch (e) {
-      process.stdout.write(`\rup ${id} ... Fail\n`)
-      console.error(e.message)
-      defaultConnection.close()
-      process.exit(1)
-    }
-    defaultConnection.close()
-  })
-  .on("--help", () => {
-    console.log()
-    console.log("  Examples:")
-    console.log()
-    console.log("    $ sqlv up 180101_000000")
-    console.log()
-  })
-
-program
-  .command("down <migration_id>")
-  .description("migrate specific migration")
-  .action(async (id, options) => {
-    const config = loadConfigFile(options.parent.config || configFileDefault)
-    const defaultConnection = createConnection(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
-    try {
-      process.stdout.write(`down ${id} ... `)
-      await migrator.down(id)
-      process.stdout.write(`\rdown ${id} ... OK\n`)
-    } catch (e) {
-      process.stdout.write(`\rdown ${id} ... Fail\n`)
-      console.error(e.message)
-      defaultConnection.close()
-      process.exit(1)
-    }
-    defaultConnection.close()
-  })
-  .on("--help", () => {
-    console.log()
-    console.log("  Examples:")
-    console.log()
-    console.log("    $ sqlv down 180101_000000")
-    console.log()
-  })
-
-program.parse(process.argv)
-
-if (program.args.length === 0) {
-  program.help()
+if (argv._.length === 0) {
+  yargs.showHelp()
 }
