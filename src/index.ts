@@ -1,8 +1,8 @@
 
-import {Migrator} from "./migrator/migrator"
-import {ConnectionMap, Migration} from "./interfaces/interfaces"
-import {MigratorConfig} from "./interfaces/migrator"
-import {HistoryConfig, DatabaseHistoryConfig} from "./interfaces/history"
+import { DatabaseHistoryConfig, HistoryConfig } from "./interfaces/history"
+import { ConnectionMap, Migration } from "./interfaces/interfaces"
+import { MigratorConfig } from "./interfaces/migrator"
+import { Migrator } from "./migrator/migrator"
 
 export {
   Migrator,

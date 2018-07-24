@@ -1,6 +1,6 @@
 
-import {Connection} from "async-db-adapter"
-import {History} from "../interfaces/history"
+import { Connection } from "async-db-adapter"
+import { History } from "../interfaces/history"
 
 export class DatabaseHistory implements History {
   constructor(

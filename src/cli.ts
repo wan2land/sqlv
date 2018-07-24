@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-import * as yargs from "yargs"
 import chalk from "chalk"
-import { InitCommand } from "./commands/init"
+import * as yargs from "yargs"
 import { CreateCommand } from "./commands/create"
-import { StatusCommand } from "./commands/status"
+import { DownCommand } from "./commands/down"
+import { InitCommand } from "./commands/init"
 import { MigrateCommand } from "./commands/migrate"
 import { RollbackCommand } from "./commands/rollback"
+import { StatusCommand } from "./commands/status"
 import { UpCommand } from "./commands/up"
-import { DownCommand } from "./commands/down"
 
 const pkg = require("../package.json") // tslint:disable-line
 

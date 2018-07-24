@@ -1,6 +1,6 @@
 
 import chalk from "chalk"
-import { CommandModule, Argv } from "yargs"
+import { Argv, CommandModule } from "yargs"
 import { loadConfigFile } from "../helpers/config"
 import { Creator } from "../migrator/creator"
 

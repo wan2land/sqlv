@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "description": "Very simple SQL Migrator.",
   "keywords": [
+    "sql",
+    "versioning",
     "migrator",
     "database",
+    "mysql",
+    "mysql2",
+    "pg",
+    "postgres",
+    "sqlite3",
+    "sqlite",
     "typescript"
   ],
   "author": "Cris <corgidisco@gmail.com>",

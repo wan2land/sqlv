@@ -1,6 +1,6 @@
 
-import {join} from "path"
-import {MigratorConfig} from "../interfaces/migrator"
+import { join } from "path"
+import { MigratorConfig } from "../interfaces/migrator"
 
 export function loadConfigFile(filename: string): MigratorConfig {
   try {

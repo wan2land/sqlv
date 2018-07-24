@@ -1,7 +1,7 @@
 
-import {ConnectionMap} from "../interfaces/interfaces"
-import {History, HistoryConfig} from "../interfaces/history"
-import {DatabaseHistory} from "./database-history"
+import { History, HistoryConfig } from "../interfaces/history"
+import { ConnectionMap } from "../interfaces/interfaces"
+import { DatabaseHistory } from "./database-history"
 
 export function create(config: HistoryConfig, connections: ConnectionMap): History {
   const historyConnection = config.connection || Object.keys(connections)[0]

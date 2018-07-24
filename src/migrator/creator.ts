@@ -1,8 +1,8 @@
 
-import {join} from "path"
-import {MigratorConfig} from "../interfaces/migrator"
+import { join } from "path"
+import { formatDate } from "../helpers/formatter"
 import * as fs from "../helpers/fs"
-import {formatDate} from "../helpers/formatter"
+import { MigratorConfig } from "../interfaces/migrator"
 
 export class Creator {
 

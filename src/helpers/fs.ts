@@ -1,6 +1,6 @@
 
-import * as path from "path"
 import * as fs from "fs"
+import * as path from "path"
 
 export function mkdirp(p: string): Promise<void> {
   return new Promise((resolve, reject) => {

@@ -1,8 +1,8 @@
 
 import chalk from "chalk"
-import { CommandModule, Argv } from "yargs"
-import { mkdirp, writeFile, readFile } from "../helpers/fs"
 import { join } from "path"
+import { Argv, CommandModule } from "yargs"
+import { mkdirp, readFile, writeFile } from "../helpers/fs"
 
 const command = "init <path>"
 const describe = "Initialize SQLV enviroment."

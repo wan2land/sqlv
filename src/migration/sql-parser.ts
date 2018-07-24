@@ -1,5 +1,5 @@
 
-import {load} from "js-yaml"
+import { load } from "js-yaml"
 
 export function parse(contents: string): {meta: {[key: string]: any}, body: string} {
   const meta: {[key: string]: any} = {}

@@ -1,10 +1,10 @@
 
-import {create as createHistory} from "../history/create"
-import {ConnectionMap, Migration, MigrationExecutor} from "../interfaces/interfaces"
-import {History} from "../interfaces/history"
-import {MigratorConfig} from "../interfaces/migrator"
 import * as fs from "../helpers/fs"
-import {parse} from "../migration/sql-parser"
+import { create as createHistory } from "../history/create"
+import { History } from "../interfaces/history"
+import { ConnectionMap, Migration, MigrationExecutor } from "../interfaces/interfaces"
+import { MigratorConfig } from "../interfaces/migrator"
+import { parse } from "../migration/sql-parser"
 
 async function executeSqlfile(connections: ConnectionMap, filename: string): Promise<void> {
   const resp = parse((await fs.readFile(filename)).toString())
@@ -28,7 +28,7 @@ export class Migrator {
     this.history = createHistory(config.history, connections)
   }
 
-  public async up(id: string, forced: boolean = false): Promise<void> {
+  public async up(id: string, forced = false): Promise<void> {
     const migration = await this.getMigrationExecutor(id)
     const hasId = await this.history.has(id)
     if (forced || !hasId) {
@@ -42,7 +42,7 @@ export class Migrator {
     }
   }
 
-  public async down(id: string, forced: boolean = false): Promise<void> {
+  public async down(id: string, forced = false): Promise<void> {
     const migration = await this.getMigrationExecutor(id)
     const hasId = await this.history.has(id)
     if (forced || hasId) {

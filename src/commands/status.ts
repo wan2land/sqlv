@@ -1,8 +1,8 @@
 
+import { create } from "async-db-adapter"
 import chalk from "chalk"
-import { CommandModule, Argv } from "yargs"
+import { Argv, CommandModule } from "yargs"
 import { loadConfigFile } from "../helpers/config"
-import { create as createConnection } from "async-db-adapter"
 import { Migrator } from "../migrator/migrator"
 
 const command = "status"
@@ -23,7 +23,7 @@ ${describe}`)
 
   public async handler(options: any): Promise<void> {
     const config = loadConfigFile(options.config)
-    const defaultConnection = createConnection(config as any)
+    const defaultConnection = create(config as any)
     const migrator = new Migrator({
       default: defaultConnection,
     }, config)

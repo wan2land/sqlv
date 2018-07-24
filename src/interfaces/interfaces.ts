@@ -1,5 +1,5 @@
 
-import {Connection} from "async-db-adapter"
+import { Connection } from "async-db-adapter"
 
 export interface ConnectionMap {
   [name: string]: Connection
@@ -14,7 +14,7 @@ export interface Migration {
   id: string
   file: {
     up?: string,
-    down?: string,
+    down?: string
   }
   applied: boolean
 }

@@ -1,5 +1,5 @@
 
-import {HistoryConfig} from "./history"
+import { HistoryConfig } from "./history"
 
 export interface MigratorConfig {
   migrations: string
