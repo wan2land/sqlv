@@ -1,5 +1,4 @@
 
-import { create } from "async-db-adapter"
 import chalk from "chalk"
 import { Argv, CommandModule } from "yargs"
 import { loadConfigFile } from "../helpers/config"
