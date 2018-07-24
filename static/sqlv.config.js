@@ -5,7 +5,7 @@ module.exports = {
   //   driver: "database",
   //   table: "migrations",
   // },
-  type: "mysql", // need, npm install mysql
+  adapter: "mysql", // need, npm install mysql
   host: "localhost",
   database: "",
   user: "sqlvuser",
