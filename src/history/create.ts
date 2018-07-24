@@ -1,5 +1,6 @@
 
-import { History, HistoryConfig } from "../interfaces/history"
+import { HistoryConfig } from "../interfaces/config"
+import { History } from "../interfaces/history"
 import { ConnectionMap } from "../interfaces/interfaces"
 import { DatabaseHistory } from "./database-history"
 

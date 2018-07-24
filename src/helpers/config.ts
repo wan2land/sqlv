@@ -1,16 +1,20 @@
 
 import { join } from "path"
-import { MigratorConfig } from "../interfaces/migrator"
+import { MigratorConfig } from "../interfaces/config"
 
 export function loadConfigFile(filename: string): MigratorConfig {
   try {
-    const config = require(join(process.cwd(), filename))
+    const {migrations, history, connections, ...config} = require(join(process.cwd(), filename))
+
     return {
-      ...config,
-      migrations: config.migrations || "migrations",
-      history: config.history || {
-        driver: "database",
-        table: "migrations",
+      migrations: migrations || "migrations",
+      history: history || {
+        driver: (history && history.driver) || "database",
+        table: (history && history.table) || "migrations",
+      },
+      connections: {
+        default: config,
+        ...(connections || {}),
       },
     }
   } catch (e) {

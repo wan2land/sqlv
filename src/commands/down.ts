@@ -25,11 +25,7 @@ ${describe}`)
   }
 
   public async handler(options: any): Promise<void> {
-    const config = loadConfigFile(options.config)
-    const defaultConnection = create(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
+    const migrator = new Migrator(loadConfigFile(options.config))
     try {
       process.stdout.write(`down ${options.id} ... `)
       await migrator.down(options.id)
@@ -37,9 +33,9 @@ ${describe}`)
     } catch (e) {
       process.stdout.write(`\rdown ${options.id} ... ${chalk.red("FAIL")}\n`)
       console.error(e.message)
-      defaultConnection.close()
+      migrator.close()
       process.exit(1)
     }
-    defaultConnection.close()
+    migrator.close()
   }
 }

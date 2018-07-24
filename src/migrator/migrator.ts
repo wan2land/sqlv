@@ -1,14 +1,18 @@
 
+import { create } from "async-db-adapter"
 import * as fs from "../helpers/fs"
 import { create as createHistory } from "../history/create"
+import { MigratorConfig } from "../interfaces/config"
 import { History } from "../interfaces/history"
 import { ConnectionMap, Migration, MigrationExecutor } from "../interfaces/interfaces"
-import { MigratorConfig } from "../interfaces/migrator"
 import { parse } from "../migration/sql-parser"
 
 async function executeSqlfile(connections: ConnectionMap, filename: string): Promise<void> {
   const resp = parse((await fs.readFile(filename)).toString())
   const connection = connections[resp.meta.connection || "default"]
+  if (!connection) {
+    throw new Error(`not defined connection named "${resp.meta.connection}"!`)
+  }
   for (const sql of resp.body.split(";")) {
     const trimSql = sql.trim()
     if (trimSql) {
@@ -19,13 +23,26 @@ async function executeSqlfile(connections: ConnectionMap, filename: string): Pro
 
 export class Migrator {
 
+  protected connections: ConnectionMap
+
   protected history: History
 
-  constructor(
-    protected connections: ConnectionMap,
-    protected config: MigratorConfig) {
+  protected migrations: string
 
+  constructor(config: MigratorConfig) {
+    const connections: ConnectionMap = {}
+    for (const key of Object.keys(config.connections)) {
+      connections[key] = create(config.connections[key])
+    }
+    this.connections = connections
     this.history = createHistory(config.history, connections)
+    this.migrations = config.migrations
+  }
+
+  public async close(): Promise<void> {
+    for (const key of Object.keys(this.connections)) {
+      await this.connections[key].close()
+    }
   }
 
   public async up(id: string, forced = false): Promise<void> {
@@ -148,13 +165,13 @@ export class Migrator {
         if (!migration.file.up) {
           return
         }
-        await executeSqlfile(connections, `${this.config.migrations}/${migration.file.up}`)
+        await executeSqlfile(connections, `${this.migrations}/${migration.file.up}`)
       },
       down: async (connections) => {
         if (!migration.file.down) {
           return
         }
-        await executeSqlfile(connections, `${this.config.migrations}/${migration.file.down}`)
+        await executeSqlfile(connections, `${this.migrations}/${migration.file.down}`)
       },
     }
   }
@@ -162,7 +179,7 @@ export class Migrator {
   protected async getMigrationFiles(): Promise<string[]> {
     const RE_SQL_EXT = /\.(up|down)\.sql$/
     try {
-      return (await fs.readdir(this.config.migrations))
+      return (await fs.readdir(this.migrations))
         .filter(file => RE_SQL_EXT.test(file))
         .sort((a, b) => {
           if (a === b) {

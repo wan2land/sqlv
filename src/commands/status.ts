@@ -22,11 +22,7 @@ ${describe}`)
   }
 
   public async handler(options: any): Promise<void> {
-    const config = loadConfigFile(options.config)
-    const defaultConnection = create(config as any)
-    const migrator = new Migrator({
-      default: defaultConnection,
-    }, config)
+    const migrator = new Migrator(loadConfigFile(options.config))
     const migrations = await migrator.status()
     let maxFileLength = migrations.reduce((carry, migration) => {
       carry = migration.file.up && carry < migration.file.up.length ? migration.file.up.length : carry
@@ -50,6 +46,7 @@ ${describe}`)
       }
     }
     console.log("+----+---------------+-" + "-".repeat(maxFileLength) + "-+")
-    defaultConnection.close()
+
+    migrator.close()
   }
 }

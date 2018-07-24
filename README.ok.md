@@ -76,3 +76,57 @@ Done! :-)
 - `rollback` : Rollback.
 - `up <migration_id>` : Only apply the specific migration.
 - `down <migration_id>` : Only rollback the specific migration.
+
+## How to use
+
+### Multi-Connection
+
+If you have multiple DB connections, you can use:
+
+```js
+// sqlv.config.js
+module.exports = {
+  connections: {
+    default: {
+      adapter: "mysql",
+      host: "localhost",
+      database: "test",
+      user: "root",
+      password: "",
+    },
+    pg: {
+      adapter: "pg",
+      user: "root",
+      password: "",     
+    },
+  },
+}
+```
+
+Migrations files, you can specify a connection with a comment.
+
+```sql
+-- @sqlv connection: pg
+
+CREATE /* ...SQL Syntax.... */;
+```
+
+You can specify multiple connections for one file.
+
+```sql
+-- @sqlv connection: default
+
+CREATE /* ...SQL Syntax.... */;
+CREATE /* ...SQL Syntax.... */;
+CREATE /* ...SQL Syntax.... */;
+
+-- @sqlv connection: pg
+
+CREATE /* ...SQL Syntax.... */;
+CREATE /* ...SQL Syntax.... */;
+```
+
+
+## License
+
+MIT

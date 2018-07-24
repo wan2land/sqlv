@@ -26,10 +26,10 @@ ${describe}`)
 
   public async handler(options: any): Promise<void> {
     const config = loadConfigFile(options.config)
-    const { filenames } = await new Creator(config).create(options.name)
+    const { filenames } = await new Creator(config.migrations).create(options.name)
 
-    console.log(chalk.gray(` up   : ${filenames.up}`))
-    console.log(chalk.gray(` down : ${filenames.down}`))
+    console.log(chalk.gray(`generate up   : ${filenames.up}`))
+    console.log(chalk.gray(`generate down : ${filenames.down}`))
     console.log(chalk.green(`migration files are generated!`))
   }
 }
