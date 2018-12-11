@@ -11,7 +11,8 @@
     "pretty": true,
     "sourceMap": true,
     "strict": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "downlevelIteration": true
   },
   "include": [
     "src/**/*"

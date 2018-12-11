@@ -125,7 +125,17 @@ $ sqlv down 181201_000000
 down 181201_000000 ... OK
 ```
 
-## How to use
+## Config
+
+### Change Migration Directory
+
+By default, the migration files are created in the `./migrations` directory. If you want to change this, please set up as follows:
+
+```js
+module.exports = {
+  migrations: "otherdirectory", // default "migrations"
+}
+```
 
 ### Multi-Connection
 
@@ -174,6 +184,48 @@ CREATE /* ...SQL Syntax.... */;
 CREATE /* ...SQL Syntax.... */;
 ```
 
+### Change History Manager
+
+There are two history manager driver, `json` and `database`.
+
+```js
+module.exports = {
+  history: {
+    driver: "json",
+  },
+}
+```
+
+```js
+module.exports = {
+  history: {
+    driver: "json",
+    path: "./yourown.history.json"
+  },
+}
+```
+
+Migration information uses the `migrations` table in the database. If you want to change this, you can do the following:
+
+```js
+module.exports = {
+  connections: {
+    default: {
+      ...
+    },
+    otherdatabase: {
+      ...
+    },
+  },
+  history: {
+    driver: "database",
+    connection: "otherdatabase",
+    table: "yourownmigrationtable", // default "migrations"
+  },
+}
+```
+
+If you want to use multiple databases and set up a specific database, use:
 
 ## License
 

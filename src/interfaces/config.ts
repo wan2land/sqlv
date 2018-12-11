@@ -9,10 +9,15 @@ export interface MigratorConfig {
   }
 }
 
-export type HistoryConfig = DatabaseHistoryConfig
+export type HistoryConfig = DatabaseHistoryConfig | JsonHistoryConfig
 
 export interface DatabaseHistoryConfig {
   driver: "database"
   connection?: string
   table: string
+}
+
+export interface JsonHistoryConfig {
+  driver: "json"
+  path?: string
 }
