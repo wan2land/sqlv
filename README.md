@@ -5,6 +5,9 @@
 [![Version](https://img.shields.io/npm/v/sqlv.svg)](https://www.npmjs.com/package/sqlv)
 [![License](https://img.shields.io/npm/l/sqlv.svg)](https://www.npmjs.com/package/sqlv)
 
+[![dependencies Status](https://img.shields.io/david/corgidisco/sqlv.svg)](https://david-dm.org/corgidisco/sqlv)
+[![devDependencies Status](https://img.shields.io/david/dev/corgidisco/sqlv.svg)](https://david-dm.org/corgidisco/sqlv?type=dev)
+
 [![NPM](https://nodei.co/npm/sqlv.png)](https://www.npmjs.com/package/sqlv)
 
 Let SQL do what SQL can.
