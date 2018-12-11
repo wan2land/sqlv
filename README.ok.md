@@ -19,15 +19,39 @@ SQLV is very simple SQL Migrator.
 ## Installation
 
 ```bash
-npm install sqlv -g # or npm install sqlv --dev
+$ npm i sqlv -D
+```
+
+Change the package.json file to the following:
+
+```json
+{
+  "scripts": {
+    "sqlv": "sqlv"
+  },
+  ...
+}
+```
+
+Now, Type the following to print the version.
+
+```bash
+$ npm run sqlv --version
+```
+
+To use it globally, please do the following:
+
+```bash
+$ npm i sqlv -g
 ```
 
 ## Usage
 
-Initialize.
+### Initialize Project
 
 ```bash
-sqlv init .
+$ sqlv init .
+$ sqlv init yourprojectpath
 ```
 
 This will create a configuration file, `sqlv.config.js`.
@@ -38,7 +62,10 @@ based on the [@stdjs/database](https://www.npmjs.com/package/@stdjs/database).
 example,
 
 ```bash
-npm install mysql2 -g
+$ npm i mysql
+$ npm i mysql2
+$ npm i pg
+$ npm i sqlite3
 ```
 
 Now, edit `sqlv.config.js` file as follows:
@@ -47,8 +74,8 @@ Now, edit `sqlv.config.js` file as follows:
 module.exports = {
   adapter: "mysql2",
   host: "localhost",
-  database: "",
-  user: "sqlvuser",
+  database: "test",
+  user: "root",
   password: "********",
 }
 ```
@@ -56,29 +83,47 @@ module.exports = {
 ### Create Migrations
 
 ```bash
-sqlv create create_init_tables
+$ sqlv create create_init_tables
 ```
 
-Two files(`create_init_tables.up.sql`, `create_init_tables.down.sql`) are created under
+Two files(`181201_000000_create_init_tables.up.sql`, `181201_000000_create_init_tables.down.sql`) are created under
 the `./migrations` directory.
 
-Now, Migrate!
+### Migrate
 
 ```bash
-sqlv migrate
+$ sqlv migrate
+up 181201_000000 ... OK
 ```
 
-Done! :-)
+### Show Current Status
 
-## Commands
+![SQLV Image](./images/sqlv-status.png)
 
-- `init <path>` : Initialize the project.
-- `create <name>` : Create a migration file.
-- `status` : Show migration status.
-- `migrate` : Migrate.
-- `rollback` : Rollback.
-- `up <migration_id>` : Only apply the specific migration.
-- `down <migration_id>` : Only rollback the specific migration.
+```bash
+$ sqlv status
+```
+
+### Rollback
+
+```bash
+$ sqlv rollback
+down 181201_000000 ... OK
+```
+
+### Migrate Specific Version
+
+```bash
+$ sqlv up 181201_000000
+up 181201_000000 ... OK
+```
+
+### Rollback Specific Version
+
+```bash
+$ sqlv down 181201_000000
+down 181201_000000 ... OK
+```
 
 ## How to use
 
