@@ -1,5 +1,5 @@
 
-import { Connection } from "async-db-adapter"
+import { Connection } from "@stdjs/database"
 
 export interface ConnectionMap {
   [name: string]: Connection

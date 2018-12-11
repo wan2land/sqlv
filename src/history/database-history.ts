@@ -1,5 +1,5 @@
 
-import { Connection } from "async-db-adapter"
+import { Connection } from "@stdjs/database"
 import { History } from "../interfaces/history"
 
 export class DatabaseHistory implements History {
@@ -12,7 +12,7 @@ export class DatabaseHistory implements History {
     if (!(await this.isReady())) {
       return []
     }
-    const migrations = await this.connection.select(`SELECT * FROM \`${this.table}\``)
+    const migrations = await this.connection.select<{id: string}>(`SELECT * FROM \`${this.table}\``)
     return migrations.map(row => row.id)
   }
 

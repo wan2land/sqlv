@@ -33,7 +33,7 @@ sqlv init .
 This will create a configuration file, `sqlv.config.js`.
 
 You need to install additional packages(`mysql`, `mysql2`, `pg`, `sqlite3`) to match your database. SQLV is
-based on the [async-db-adapter](https://www.npmjs.com/package/async-db-adapter).
+based on the [@stdjs/database](https://www.npmjs.com/package/@stdjs/database).
 
 example,
 

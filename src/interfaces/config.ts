@@ -1,5 +1,5 @@
 
-import { ConnectionConfig } from "async-db-adapter"
+import { ConnectionConfig } from "@stdjs/database"
 
 export interface MigratorConfig {
   migrations: string

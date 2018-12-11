@@ -1,5 +1,5 @@
 
-import { create } from "async-db-adapter"
+import { create } from "@stdjs/database"
 import * as fs from "../helpers/fs"
 import { create as createHistory } from "../history/create"
 import { MigratorConfig } from "../interfaces/config"
